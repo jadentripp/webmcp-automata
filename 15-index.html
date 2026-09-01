@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AUTOMATA - a WebMCP co-creation playground</title>
+<meta name="description" content="A cellular automata playground with WebMCP tools so humans and AI agents can build, run, and analyze Game of Life worlds together." />
+<link rel="stylesheet" href="styles.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect x='1' y='1' width='4' height='4' fill='%233dff8b'/><rect x='6' y='1' width='4' height='4' fill='%233dff8b'/><rect x='6' y='6' width='4' height='4' fill='%2335d3ff'/><rect x='11' y='6' width='4' height='4' fill='%233dff8b'/><rect x='6' y='11' width='4' height='4' fill='%233dff8b'/></svg>" />
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark" aria-hidden="true"></span>
+    <div>
+      <h1>AUTOMATA</h1>
+      <p class="tagline">a WebMCP co-creation playground - you and your agent, one universe</p>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <span id="webmcp-status" class="pill pill-warn">WebMCP: checking&hellip;</span>
+  </div>
+</header>
+
+<main class="layout">
+  <section class="stage">
+    <div class="canvas-wrap">
+      <canvas id="grid" width="960" height="720" aria-label="Cellular automata grid. Click and drag to draw cells."></canvas>
+      <div id="stamp-hint" class="stamp-hint hidden"></div>
+    </div>
+    <div class="stage-hint">
+      <span><kbd>drag</kbd> draw</span>
+      <span><kbd>shift+drag</kbd> erase</span>
+      <span><kbd>space</kbd> play / pause</span>
+      <span><kbd>s</kbd> step</span>
+      <span><kbd>c</kbd> clear</span>
+      <span>pick a pattern, then click the grid to stamp it</span>
+    </div>
+  </section>
+
+  <aside class="sidebar">
+    <section class="card controls">
+      <h2>Simulation</h2>
+      <div class="btn-row">
+        <button id="btn-play" class="btn primary" title="space">&#9654; Run</button>
+        <button id="btn-step" class="btn" title="s">Step</button>
+        <button id="btn-clear" class="btn danger" title="c">Clear</button>
+        <button id="btn-noise" class="btn">Soup</button>
+        <button id="btn-erase" class="btn" title="toggle erase mode (touch)">Erase</button>
+      </div>
+      <label class="field">
+        <span>Speed <output id="speed-out">12</output> gen/s</span>
+        <input id="speed" type="range" min="1" max="60" value="12" />
+      </label>
+      <label class="check"><input id="wrap" type="checkbox" checked /> Toroidal wrap (edges connect)</label>
+    </section>
+
+    <section class="card rules">
+      <h2>Rules</h2>
+      <select id="rule-preset"></select>
+      <p id="rule-blurb" class="blurb"></p>
+      <div class="rulestring-row">
+        <input id="rulestring" type="text" spellcheck="false" value="B3/S23" />
+        <button id="btn-apply-rule" class="btn">Apply</button>
+      </div>
+    </section>
+
+    <section class="card patterns">
+      <h2>Pattern stamps</h2>
+      <div id="pattern-list" class="pattern-list"></div>
+    </section>
+
+    <section class="card stats">
+      <h2>State</h2>
+      <dl class="stat-grid">
+        <div><dt>generation</dt><dd id="stat-gen">0</dd></div>
+        <div><dt>population</dt><dd id="stat-pop">0</dd></div>
+        <div><dt>density</dt><dd id="stat-density">0%</dd></div>
+        <div><dt>rule</dt><dd id="stat-rule">B3/S23</dd></div>
+      </dl>
+    </section>
+
+    <section class="card agent-console">
+      <h2>Agent console <button id="console-toggle" class="btn tiny">open</button></h2>
+      <div id="console-body" class="hidden">
+        <p class="blurb">Every WebMCP tool this page registers, callable by hand. Agents see the same list.</p>
+        <select id="console-tool"></select>
+        <pre id="console-schema" class="schema"></pre>
+        <textarea id="console-args" rows="3" spellcheck="false" placeholder='{"generations": 300}'></textarea>
+        <button id="console-run" class="btn primary">Execute tool</button>
+        <pre id="console-result" class="result"></pre>
+      </div>
+    </section>
+
+    <section class="card log-card">
+      <h2>Activity</h2>
+      <ul id="log" class="log"></ul>
+    </section>
+  </aside>
+</main>
+
+<script src="src/engine.js"></script>
+<script src="src/app.js"></script>
+<script src="src/webmcp.js"></script>
+</body>
+</html>
